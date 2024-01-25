@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Los Pollos</title>
+  <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+
+  <style>
+    .fondoBanner {
+      background-image: url(b1.jpg);
+      border-radius: 5px;
+      padding: 10px;
+      background-repeat: none;
+      width: 100%;
+    }
+
+    .opcion {
+      background-color: #e2e2e2;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+
+    .uno,
+    .dos,
+    .tres {
+      display: inline-flex;
+      gap: 18px;
+      align-items: center;
+      margin-left: 18%;
+      margin-top: 10px;
+    }
+    .button.selected {
+      background-color: rgb(255, 196, 0);
+      border-color: rgb(255, 196, 0);
+    }
+
+    .button {
+      position: relative;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+      padding-block: 1rem;
+      padding-inline: 2.25rem;
+      background-color: rgb(179, 33, 0);
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #ffff;
+      font-weight: bold;
+      border: 5px solid #ffffff4d;
+      outline: none;
+      overflow: hidden;
+      font-size: 15px;
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .button:hover::before {
+      animation: shine 1.5s ease-out infinite;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100%;
+      background-image: linear-gradient(120deg,
+          rgba(255, 255, 255, 0) 30%,
+          rgba(255, 255, 255, 0.8),
+          rgba(255, 255, 255, 0) 70%);
+      top: 0;
+      left: -100px;
+      opacity: 0.6;
+    }
+
+    @keyframes shine {
+      0% {
+        left: -100px;
+      }
+
+      60% {
+        left: 100%;
+      }
+
+      to {
+        left: 100%;
+      }
+    }
+
+    #heladosContainer,
+    #donutsContainer,
+    #fresaContainer,
+    #chocolateContainer {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-300 font-sans">
+
+  <header class="bg-gray-800 text-white text-center py-4">
+    <div class="fondoBanner">
+      <h1 class="text-3xl font-bold">Los Pollos</h1>
+      <br>
+      <img src="./Logo-Centro.png" style="border-radius: 25px; margin-left: 35%; width: 30%;">
+    </div>
+  </header>
+
+  <nav class="bg-red-700  py-2">
+    <div class="flex justify-around">
+      <a href="Combos.php" class="text-white hover:bg-yellow-500 py-2 px4 rounded">Combos Familiar</a>
+      <a href="Reservas.php" class="text-white hover:bg-yellow-500 py-2 px4 rounded">Reservas</a>
+      <a href="Postres.php" class="text-white hover:bg-yellow-500 py-2 px4 rounded">Postres</a>
+      <a href="Bebidas.php" class="text-white hover:bg-yellow-500 py-2 px4 rounded">Bebidas</a>
+    </div>
+  </nav>
+
+  <main class="container mx-auto mt-4">
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="bg-white p-5 rounded-md shadow-md">
+        <div class="uno">
+          <button class="button helados" onclick="selectButton(this, 'helados')">Helados</button>
+          <button class="button donuts" onclick="selectButton(this, 'donuts')">Donuts</button>
+        </div>
+        <div class="dos">
+          <button class="button fresa" onclick="selectButton(this, 'fresa')">Fresa</button>
+          <button class="button chocolate" onclick="selectButton(this, 'chocolate')">Chocolate</button>
+        </div>
+      </div>
+  
+      <div id="heladosContainer" class="bg-white p-4 rounded-md shadow-md">
+        <img src="helado.png" alt="">
+        <img id="heladoFresaImage" src="helado-fresa.png" alt="" style="display: none;">
+        <img id="heladoChocolateImage" src="helado-chocolate.png" alt="" style="display: none;">
+      </div>
+  
+      <div id="donutsContainer" class="bg-white p-4 rounded-md shadow-md">
+        <img src="donuts.png" alt="">
+        <img id="donutFresaImage" src="donut-fresa.png" alt="" style="display: none;">
+        <img id="donutChocolateImage" src="donut-chocolate.png" alt="" style="display: none;">
+      </div>
+    </section>
+    <br>
+  </main>
+  
+  <script>
+    // Objeto para almacenar los botones seleccionados en cada grupo
+    const selectedGroups = {
+      helados: null,
+      donuts: null,
+      fresa: null,
+      chocolate: null,
+    };
+  
+    // Función para manejar la selección de botones y controlar la visibilidad de los contenedores
+    function selectButton(button, group) {
+      // Obtener el botón previamente seleccionado en el mismo grupo
+      const prevSelectedButton = selectedGroups[group];
+  
+      // Remover la clase 'selected' del botón previamente seleccionado, si existe
+      if (prevSelectedButton) {
+        prevSelectedButton.classList.remove('selected');
+      }
+  
+      // Añadir la clase 'selected' al botón actual y actualizar la referencia en el objeto selectedGroups
+      button.classList.add('selected');
+      selectedGroups[group] = button;
+  
+      // Mostrar u ocultar contenedores según el grupo seleccionado
+      if (group === 'helados') {
+        showContainer('heladosContainer');
+        hideContainer('donutsContainer');
+        hideContainer('heladoFresaImage');
+        hideContainer('heladoChocolateImage');
+        hideContainer('donutFresaImage');
+        hideContainer('donutChocolateImage');
+      } else if (group === 'donuts') {
+        hideContainer('heladosContainer');
+        showContainer('donutsContainer');
+        hideContainer('heladoFresaImage');
+        hideContainer('heladoChocolateImage');
+        hideContainer('donutFresaImage');
+        hideContainer('donutChocolateImage');
+      } else if (group === 'fresa') {
+        showContainer('heladoFresaImage');
+        showContainer('donutFresaImage');
+        hideContainer('heladoChocolateImage');
+        hideContainer('donutChocolateImage');
+      } else if (group === 'chocolate') {
+        hideContainer('heladoFresaImage');
+        hideContainer('donutFresaImage');
+        showContainer('heladoChocolateImage');
+        showContainer('donutChocolateImage');
+      }
+    }
+  
+    function showContainer(containerId) {
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.style.display = 'block';
+      }
+    }
+  
+    function hideContainer(containerId) {
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.style.display = 'none';
+      }
+    }
+  </script>
+  
+  
+  
+
+
+  <footer class="bg-gray-800 text-white text-center py-2">
+    <center>
+      <img src="./Anuncio-Abajo.jpg" alt="" srcset="">
+    </center>
+    <br>
+    <p>&copy; 2024 Venta de Pollo Frito</p>
+  </footer>
+
+</body>
+
+</html>
